@@ -18,4 +18,4 @@ Easy!
 
 ## Making your own personality
 
-See bots/example.bot.php for an example. So far each new personality has to have trigger words set up manually because I'm lazy.
+See personalities/example.persona.php for an example. So far each new personality has to have trigger words set up manually because I'm lazy.
