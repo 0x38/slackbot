@@ -19,3 +19,5 @@ Easy!
 ## Making your own personality
 
 See personalities/example.persona.php for an example. So far each new personality has to have trigger words set up manually because I'm lazy.
+
+You can make personalities that will be ignored by git by using .pvt instead of .php as an extension.
