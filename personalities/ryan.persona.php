@@ -1,6 +1,6 @@
 <?php
 
-class ryanbot extends slackbot{
+class ryanpersona extends slackbot{
 
 	function __construct(){
 		$this->response['username'] = 'Ryan Gosling';

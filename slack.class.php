@@ -5,7 +5,7 @@ abstract class slackbot{
 	public $commands = array('bad_command' => '_bad_command', 'debug' => '_debug');
 
 	function __construct(){
-		$this->response['username'] = 'fenixbot';
+		$this->response['username'] = BOT_USERNAME;
 		$this->register_callback(array('weather', 'wether'), '_post_weather');
 	}
 
@@ -48,7 +48,7 @@ abstract class slackbot{
 
 	// Helper functions
 	protected function __get_weather(){
-		$weather = curl_init('https://api.forecast.io/forecast/8b263a1bfe0def461a66e748d71f6e26/45.416972,-75.705242?units=si');
+		$weather = curl_init('https://api.forecast.io/forecast/'.FORECASTIO_API.'/'.FORECASTIO_LATLON.'?units='.FORECASTIO_UNITS);
 		curl_setopt($weather, CURLOPT_RETURNTRANSFER, true);
 		return json_decode(curl_exec($weather), true);
 	}
