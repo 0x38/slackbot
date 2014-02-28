@@ -1,6 +1,6 @@
 <?php
 
-class examplebot extends slackbot{
+class examplepersona extends slackbot{
 	
 	function __construct(){
 
