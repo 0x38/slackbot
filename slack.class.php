@@ -10,11 +10,19 @@ abstract class slackbot{
 	}
 
 	// Public facing functions
-	public function handle($command = ''){
-		$command = strtolower($command);
-		if(!isset($this->commands[$command])) $callback = $this->commands['bad_command'];
-		else $callback = $this->commands[$command];
-		$this->{$callback}($command);
+	public function handle($input = ''){
+		$callback = $this->commands['bad_command'];
+		$args = array();
+
+		foreach($this->commands as $cmd_key => $cmd){
+			if(strpos($input, $cmd_key) === 0){
+				$args = explode(' ', trim(str_replace($cmd_key, '', $input)));
+				$callback = $cmd;
+				break;
+			}
+		}
+
+		$this->{$callback}($args);
 	}
 	public function respond($text = null){
 		if(!is_null($text)) $this->response['text'] = $text;
@@ -47,10 +55,34 @@ abstract class slackbot{
 	}
 
 	// Helper functions
-	protected function __get_weather(){
-		$weather = curl_init('https://api.forecast.io/forecast/'.FORECASTIO_API.'/'.FORECASTIO_LATLON.'?units='.FORECASTIO_UNITS);
+	protected function __latlng($location){
+		if(empty($location) || GEOCODER_API === '') return array('region' => '', 'latlng' => FORECASTIO_LATLON);
+
+		$query = array(
+			'address' => $location,
+			'key' => GEOCODER_API,
+			'sensor' => 'false'
+		);
+		$address = curl_init('https://maps.googleapis.com/maps/api/geocode/json?' . http_build_query($query));
+		curl_setopt($address, CURLOPT_RETURNTRANSFER, true);
+		$address = json_decode(curl_exec($address), true);
+
+		if(empty($address['results'])){
+			return array('region' => '', 'latlng' => FORECASTIO_LATLON);
+		}else{
+			return array(
+				'region' => $address['results'][0]['address_components'][0]['long_name'] . ', ' . $address['results'][0]['address_components'][2]['short_name'], 
+				'latlng' => $address['results'][0]['geometry']['location']['lat'] . ',' . $address['results'][0]['geometry']['location']['lng']
+			);
+		}
+	}
+	protected function __get_weather($location = ''){
+		$location = $this->__latlng($location);
+		$weather = curl_init('https://api.forecast.io/forecast/'.FORECASTIO_API.'/'.$location['latlng'].'?units='.FORECASTIO_UNITS);
 		curl_setopt($weather, CURLOPT_RETURNTRANSFER, true);
-		return json_decode(curl_exec($weather), true);
+		$weather = json_decode(curl_exec($weather), true);
+		$weather['region'] = $location['region'];
+		return $weather;
 	}
 	protected function __build_image($src, $text = null){
 		return '<' . $src . '?' . time() . (is_string($text) ? '|' . $text : '') . '>';
@@ -58,7 +90,7 @@ abstract class slackbot{
 	public function __d($a){
 		$o = print_r($a, true);
 		if(!$o || !$a) $o = var_export($a, true);
-		echo '<pre>',$o,'</pre>';
+		echo '<pre>',htmlentities($o),'</pre>';
 	}
 
 

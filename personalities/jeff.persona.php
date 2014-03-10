@@ -14,13 +14,14 @@ class jeffpersona extends slackbot{
 	protected function _bad_command($command = ''){
 		$this->respond('I uh uh... don\'t know what "' . $command. '" is.');
 	}
-	protected function _post_weather(){
-		$weather = $this->__get_weather();
-		$response  = 'It\'s uh... uh currently ' . strtolower($weather['currently']['summary']) . ".\n";
+	protected function _post_weather($args = array()){
+		$weather = $this->__get_weather($args[0]);
+		$response  = 'It\'s uh... uh currently ' . strtolower($weather['currently']['summary']) . ($weather['region'] ? ' in ' . ucfirst($weather['region']) : '') . ".\n";
 		$response .= 'The temperature is ' . round($weather['currently']['temperature']) . ' and... uh feels like ' . round($weather['currently']['apparentTemperature']) . '. ';
+		
 		$this->respond($response);
 	}
 	protected function _post_shirtless(){
-		$this->respond($this->__build_image('http://i.imgur.com/8av3ydt.jpg', 'Better?'));
+		$this->respond($this->__build_image('http://i.imgur.com/LVSMqPY.gif', 'Shirtlessness uh uh finds a way.'));
 	}
 }
