@@ -16,7 +16,7 @@ class ryanpersona extends slackbot{
 		$this->respond('...');
 	}
 	protected function _post_weather($args = array()){
-		$weather = $this->__get_weather($args[0]);
+		$weather = $this->__get_weather(implode(' ', $args));
 		$response  = 'It\'s currently ' . strtolower($weather['currently']['summary']) . ' and ' . round($weather['currently']['temperature']). ($weather['region'] ? ' in ' . ucfirst($weather['region']) : '') . "\n";
 		$response .= 'But in my bed it\'s 23 and cuddly.';
 		$this->respond($response);

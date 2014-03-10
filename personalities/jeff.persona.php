@@ -15,7 +15,7 @@ class jeffpersona extends slackbot{
 		$this->respond('I uh uh... don\'t know what "' . $command. '" is.');
 	}
 	protected function _post_weather($args = array()){
-		$weather = $this->__get_weather($args[0]);
+		$weather = $this->__get_weather(implode(' ', $args));
 		$response  = 'It\'s uh... uh currently ' . strtolower($weather['currently']['summary']) . ($weather['region'] ? ' in ' . ucfirst($weather['region']) : '') . ".\n";
 		$response .= 'The temperature is ' . round($weather['currently']['temperature']) . ' and... uh feels like ' . round($weather['currently']['apparentTemperature']) . '. ';
 		
