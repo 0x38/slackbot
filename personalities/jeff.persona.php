@@ -11,8 +11,8 @@ class jeffpersona extends slackbot{
 	}
 
 	// Command callbacks
-	protected function _bad_command($command = ''){
-		$this->respond('I uh uh... don\'t know what "' . $command. '" is.');
+	protected function _bad_command($args = array()){
+		$this->respond('I uh uh... don\'t know what "' . $args[0] . '" is.');
 	}
 	protected function _post_weather($args = array()){
 		$weather = $this->__get_weather(implode(' ', $args));

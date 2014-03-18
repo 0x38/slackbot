@@ -12,7 +12,7 @@ class ryanpersona extends slackbot{
 	}
 
 	// Command callbacks
-	protected function _bad_command($command = ''){
+	protected function _bad_command(){
 		$this->respond('...');
 	}
 	protected function _post_weather($args = array()){

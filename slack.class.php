@@ -12,7 +12,7 @@ abstract class slackbot{
 	// Public facing functions
 	public function handle($input = ''){
 		$callback = $this->commands['bad_command'];
-		$args = array();
+		$args = array($input);
 
 		foreach($this->commands as $cmd_key => $cmd){
 			if(strpos($input, $cmd_key) === 0){
