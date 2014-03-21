@@ -50,7 +50,7 @@ abstract class slackbot{
 		$lines = array();
 		foreach($this->help as $callback => $help_text){
 			$commands = array_keys($this->commands, $callback);
-			$lines[] = implode(', ', $commands) . ":\n\t" . $help_text;
+			$lines[] = implode('; ', $commands) . ":\n\t" . $help_text;
 		}
 		$this->respond(implode("\n", $lines));
 	}
