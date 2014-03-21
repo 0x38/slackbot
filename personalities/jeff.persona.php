@@ -8,6 +8,11 @@ class jeffpersona extends slackbot{
 
 		$this->register_callback(array('weather', 'wether'), '_post_weather');
 		$this->register_callback(array('shirtless', 'take it off'), '_post_shirtless');
+
+		$this->help = array(
+			'_post_weather' => 'Pattern: weather <address>. Posts weather from Ottawa or from <address>.',
+			'_post_shirtless' => 'Just try it.'
+		);
 	}
 
 	// Command callbacks

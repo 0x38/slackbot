@@ -7,6 +7,10 @@ class redditpersona extends slackbot{
 		$this->response['icon_emoji'] = ':/r/:';
 
 		$this->register_callback(array('random'), '_post_random_picture');
+
+		$this->help = array(
+			'_post_random_picture' => 'Pattern: random <subreddit>. Posts any random link from <subreddit>. Prioritizes imags.'
+		);
 	}
 
 	// Command callbacks

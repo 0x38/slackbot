@@ -9,6 +9,12 @@ class ryanpersona extends slackbot{
 		$this->register_callback(array('weather', 'wether'), '_post_weather');
 		$this->register_callback(array('shirtless', 'take it off', 'too much shirt, gos'), '_post_shirtless');
 		$this->register_callback(array("gos, it's cold", 'put it on', "remember, you're canadian"), '_post_shirtfull');
+
+		$this->help = array(
+			'_post_weather' => 'Pattern: weather <address>. Posts weather from Ottawa or from <address>.',
+			'_post_shirtless' => 'Maybe it\'s hot out.',
+			'_post_shirtfull' => 'Maybe it\'s cold out.'
+		);
 	}
 
 	// Command callbacks

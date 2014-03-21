@@ -2,7 +2,8 @@
 
 abstract class slackbot{
 	public $response = array();
-	public $commands = array('bad_command' => '_bad_command', 'debug' => '_debug');
+	public $commands = array('bad_command' => '_bad_command', 'debug' => '_debug', 'help' => '_help', '?' => '_help');
+	public $help = array();
 
 	function __construct(){
 		$this->response['username'] = BOT_USERNAME;
@@ -37,13 +38,21 @@ abstract class slackbot{
 	}
 
 	// Default callbacks
-	protected function _bad_command($command = ''){
-		$this->respond('The command "' . $command. '" has no registered callback.');
+	protected function _bad_command($command = array()){
+		$this->respond('The command "' . implode(' ', $command) . '" has no registered callback.');
 	}
 	protected function _debug(){
 		$response = $this->response;
 		unset($response['text']);
 		$this->respond(json_encode($response));
+	}
+	protected function _help(){
+		$lines = array();
+		foreach($this->help as $callback => $help_text){
+			$commands = array_keys($this->commands, $callback);
+			$lines[] = implode(', ', $commands) . ":\n\t" . $help_text;
+		}
+		$this->respond(implode("\n", $lines));
 	}
 
 	// Custom callbacks

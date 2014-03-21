@@ -16,6 +16,14 @@ class examplepersona extends slackbot{
 		$this->register_callback(array('hello'), '_post_hello_world');
 		$this->register_callback(array('weather', 'wether'), '_post_weather');
 		$this->register_callback(array('shirtless', 'take it off'), '_post_shirtless');
+
+		// The public help variable is just an array of callbacks as keys and explanations of
+		// that callback's function as the value. These items are displayed when ? or help is 
+		// the command passed to your persona. The slackbot core handles posting the help
+		// information to the channel.
+		$this->help['_post_hello_world'] = 'Posts "Hello, world!" to the channel.';
+		$this->help['_post_weather'] = 'Pattern: weather <address>. Posts weather from Ottawa or from <address>.';
+		$this->help['_post_shirtless'] = 'Nudes! Nudes! Nudes!';
 	}
 
 	// _bad_command has a default implementation so this can be ommitted
@@ -35,8 +43,8 @@ class examplepersona extends slackbot{
 	// This callback references a helper function called __get_weather in
 	// the slackerbot abstract class. All of your shared helper functions
 	// should be put in that abstract.
-	protected function _post_weather(){
-		$weather = $this->__get_weather();
+	protected function _post_weather($args = array()){
+		$weather = $this->__get_weather(implode(' ', $args));
 		$response  = 'It\'s uh... uh currently ' . strtolower($weather['currently']['summary']) . ".\n";
 		$response .= 'The temperature is ' . round($weather['currently']['temperature']) . ' and... uh feels like ' . round($weather['currently']['apparentTemperature']) . '. ';
 		$this->respond($response);
