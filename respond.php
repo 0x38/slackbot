@@ -3,7 +3,15 @@
 require_once 'config.php';
 require_once 'slack.class.php';
 
-list($trigger, $command) = explode(':', strtolower($_REQUEST['text']));
+$parts = explode(':', strtolower($_REQUEST['text']));
+if(!isset($_GET['stream'])){
+	$trigger = $parts[0];
+	$command = $parts[1];
+}else{
+	$trigger = 'base';
+	$command = $parts[0];
+}
+
 $command = trim($command);
 
 if(file_exists('personalities/' . $trigger . '.persona.pvt')) $persona_file = 'personalities/' . $trigger . '.persona.pvt';
@@ -14,6 +22,6 @@ require_once $persona_file;
 
 $bot = $trigger . 'persona';
 $bot = new $bot();
-$bot->handle($command);
+$bot->handle($command, $_POST);
 
 ?>

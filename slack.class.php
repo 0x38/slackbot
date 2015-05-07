@@ -17,6 +17,7 @@ abstract class slackbot{
 
 		foreach($this->commands as $cmd_key => $cmd){
 			if(strpos($input, $cmd_key) === 0){
+				$this->active_command = $cmd_key;
 				$args = explode(' ', trim(str_replace($cmd_key, '', $input)));
 				$callback = $cmd;
 				break;
@@ -44,7 +45,10 @@ abstract class slackbot{
 	protected function _debug(){
 		$response = $this->response;
 		unset($response['text']);
-		$this->respond(json_encode($response));
+		$packet = json_encode($_POST);
+
+		$out = $packet . "\n" . json_encode($response);
+		$this->respond($out);
 	}
 	protected function _help(){
 		$lines = array();
@@ -80,7 +84,7 @@ abstract class slackbot{
 			return array('region' => '', 'latlng' => FORECASTIO_LATLON);
 		}else{
 			return array(
-				'region' => $address['results'][0]['address_components'][0]['long_name'] . ', ' . $address['results'][0]['address_components'][2]['short_name'], 
+				'region' => $address['results'][0]['address_components'][0]['long_name'] . ', ' . $address['results'][0]['address_components'][2]['short_name'],
 				'latlng' => $address['results'][0]['geometry']['location']['lat'] . ',' . $address['results'][0]['geometry']['location']['lng']
 			);
 		}
